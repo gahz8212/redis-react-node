@@ -17,7 +17,13 @@ redisClient.connect().catch(console.error);
 // app.js 또는 server.js
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://192.168.45.76:8081", // 앱 개발 시 사용하는 주소 (또는 true)
+    // origin: 'http://192.168.10.56:8081', // 앱 개발 시 사용하는 주소 (또는 true)
+    credentials: true, // 쿠키/세션 통신 허용
+  })
+);
 passportConfig();
 
 app.set("port", process.env.PORT || 5000);
