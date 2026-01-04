@@ -4,29 +4,34 @@ const { findUserByEmail, createUser } = require("../db/user_db");
 const bcrypt = require("bcrypt");
 const router = express.Router();
 const passport = require("passport");
+const { User } = require("../models");
 
 // POST /api/users/login - 로그인
-router.post("/login", (req, res, next) => {
+router.post("/login", (req, res) => {
   passport.authenticate("local", (authError, user, info) => {
-    if (authError) {
-      console.error(authError);
-      return next(authError);
-    }
-    if (!user) {
-      return res.json({ message: "로그인 실패" });
-    }
-    return req.login(user, (loginError) => {
-      if (loginError) {
-        console.error(loginError);
-        return next(loginError);
+    try {
+      if (authError) {
+        console.error(authError);
+        throw new Error(authError);
       }
+      if (!user) {
+        throw new Error(info.message);
+      }
+      return req.login(user, (loginError) => {
+        if (loginError) {
+          console.error(loginError);
+          throw new Error(loginError);
+        }
 
-      return res.json({
-        message: "로그인 성공",
-        user: { id: user.id, nickname: user.nickname, email: user.email },
+        return res.status(200).json({
+          message: "로그인 성공",
+          user: { id: user.id, nickname: user.nickname, email: user.email },
+        });
       });
-    });
-  })(req, res, next);
+    } catch (e) {
+      return res.status(400).json(e.message);
+    }
+  })(req, res);
 });
 
 // GET /api/users/me - 로그인된 사용자 정보
@@ -34,13 +39,16 @@ router.get("/me", (req, res) => {
   if (!req.session || !req.session.user) {
     return res.status(401).json({ error: "로그인이 필요합니다." });
   }
+  try {
+    const { id, username } = req.session.user;
 
-  const { id, username, created_at } = req.session.user;
-
-  return res.json({
-    success: true,
-    user: { id, username, created_at },
-  });
+    return res.status(200).json({
+      success: true,
+      user: { id, username },
+    });
+  } catch (e) {
+    return res.status(400).json(e.message);
+  }
 });
 
 // POST /api/users/join - 회원가입
@@ -51,13 +59,15 @@ router.post("/join", async (req, res) => {
     return res.status(400).json({ error: "이메일과 비밀번호를 입력해주세요." });
   }
   try {
-    const user = await findUserByEmail(email);
+    // const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email } });
     if (user) {
       return res.status(401).json({ error: "이미 등록된 유저명 입니다." });
     }
     const hash = await bcrypt.hash(password, 12);
     // console.log(hash);
-    await createUser(nickname, email, hash);
+    // await createUser(nickname, email, hash);
+    await User.create({ nickname, email, hash });
     return res.status(200).json({ message: "회원가입 성공" });
   } catch (e) {
     console.error(e);

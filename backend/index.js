@@ -11,9 +11,21 @@ const uploadRouter = require("./routes/upload_router");
 const passportConfig = require("./passport");
 const { RedisStore } = require("connect-redis");
 const { createClient } = require("redis");
-
 const redisClient = createClient();
 redisClient.connect().catch(console.error);
+
+// sequelize로 데이터베이스와 연결
+const { sequelize } = require("./models");
+sequelize
+  .sync({ force: false })
+  .then(() => {
+    console.log("데이터베이스 연결 성공");
+  })
+  .catch((e) => {
+    console.error(e);
+  });
+
+  
 // app.js 또는 server.js
 
 const app = express();
