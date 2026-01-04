@@ -1,32 +1,52 @@
 import { useState } from "react";
 import { useAuthStore } from "../../store/authStore";
+import Login from "./auth/Login";
+import Join from "./auth/Join";
 // import Loading from "./Loading";
 import { fetchPosts, logoutList } from "./Board";
+import { useEffect } from "react";
 function Header() {
   // Zustand에서 상태와 액션 가져오기
-  const { user, login, join, logout, loading, error } = useAuthStore();
+  const {
+    user,
+    login: authLogin,
+    join: authJoin,
+    logout,
+    loading,
+    error,
+  } = useAuthStore();
 
   // 로컬 상태 (폼 입력용)
-  const [username, setUsername] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errMessage, setErrMessage] = useState(true);
+  const [select, setSelect] = useState(true);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const result = await login(username, password);
+    const result = await authLogin(email, password);
 
     if (result?.success) {
-      setUsername("");
+      setNickname("");
+      setEmail("");
       setPassword("");
       fetchPosts();
     }
   };
+
   const handleJoin = async () => {
-    await join(username, password);
+    await authJoin(nickname, email, password);
   };
   const handleLogout = () => {
     logoutList();
     logout();
   };
+  useEffect(() => {
+    setTimeout(() => {
+      setErrMessage(false);
+    }, 3000);
+  }, [error]);
 
   return (
     <header className="header">
@@ -36,40 +56,34 @@ function Header() {
         </div>
 
         <div className="header-right">
-          {user ? (
-            <div className="user-info">
-              <strong>{user.username}</strong>님 환영합니다!
-              <button onClick={handleLogout} className="btn-logout">
-                로그아웃
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleLogin} className="login-form">
-              <input
-                type="text"
-                placeholder="유저명"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                disabled={loading}
+          <div>
+            {select ? (
+              <Login
+                user={user}
+                handleLogin={handleLogin}
+                handleLogout={handleLogout}
+                loading={loading}
+                email={email}
+                setEmail={setEmail}
+                password={password}
+                setPassword={setPassword}
               />
-              <input
-                type="password"
-                placeholder="비밀번호"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                disabled={loading}
+            ) : (
+              <Join
+                handleJoin={handleJoin}
+                loading={loading}
+                nickname={nickname}
+                setNickname={setNickname}
+                email={email}
+                setEmail={setEmail}
+                password={password}
+                setPassword={setPassword}
               />
-              <button type="submit" disabled={loading}>
-                {loading ? "로그인 중..." : "로그인"}
-              </button>
-              <button disabled={loading} onClick={handleJoin}>
-                회원가입
-              </button>
-            </form>
-          )}
-
+            )}
+          </div>
+          <div className="authSelector" onClick={() => setSelect(!select)}>
+            {user ? "" : select ? "회원가입" : "로그인"}
+          </div>
           {error && <p className="login-error">{error}</p>}
         </div>
       </div>

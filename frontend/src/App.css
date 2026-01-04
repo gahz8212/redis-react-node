@@ -98,19 +98,24 @@ button:active {
 }
 
 .header-right {
-  display: flex;
+  padding: 10px 20px;
+  /* background: yellow; */
+
+  /* display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 12px; */
 }
 
 /* 로그인 폼 */
-.login-form {
+.auth-form {
   display: flex;
   align-items: center;
   gap: 10px;
+  position: relative;
+  box-sizing: border-box;
 }
 
-.login-form input {
+.auth-form input {
   width: 170px;
   height: 38px;
   padding: 0 12px;
@@ -118,36 +123,45 @@ button:active {
   border-radius: 10px;
   outline: none;
   background: #fff;
+  flex: 1;
 }
 
-.login-form input:focus {
+.auth-form input:focus {
   border-color: rgba(79, 70, 229, 0.45);
   box-shadow: 0 0 0 4px var(--primary-weak);
 }
-
+.auth-form .nickInput {
+  position: absolute;
+  top: 45px;
+  /* left: 10px; */
+}
 /* 로그인 버튼: primary */
-.login-form button {
+.auth-form button {
   height: 38px;
   padding: 0 14px;
   border-color: var(--primary);
   background: var(--primary);
   color: var(--on-primary);
 }
-.login-form button:hover {
+.auth-form button:hover {
   background: var(--primary-hover);
   border-color: var(--primary-hover);
 }
-.login-form button:disabled {
+.auth-form button:disabled {
   opacity: 0.65;
   cursor: not-allowed;
 }
-
 .login-error {
   margin: 8px 0 0;
   color: #b91c1c;
   font-size: 13px;
 }
 
+.authSelector {
+  text-align: right;
+  margin: 10px;
+  cursor: pointer;
+}
 /* 로그인 후 */
 .user-info {
   display: flex;
@@ -355,12 +369,12 @@ button:active {
     align-items: flex-start;
   }
 
-  .login-form {
+  .auth-form {
     width: 100%;
     flex-wrap: wrap;
   }
 
-  .login-form input {
+  .auth-form input {
     width: min(240px, 100%);
   }
 

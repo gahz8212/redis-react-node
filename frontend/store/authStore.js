@@ -29,13 +29,13 @@ export const useAuthStore = create((set) => ({
     }
   },
 
-  login: async (username, password) => {
+  login: async (email, password) => {
     set({ loading: true, error: null });
 
     try {
       const res = await instance.post(
         `${API_URL}/users/login`,
-        { username, password },
+        { email, password },
         { withCredentials: true }
       );
       console.log(res.data);
@@ -53,13 +53,13 @@ export const useAuthStore = create((set) => ({
     }
   },
 
-  join: async (username, password) => {
+  join: async (nickname,email, password) => {
     set({ loading: true, error: null });
     try {
       // console.log(username);
       const res = await instance.post(
         `${API_URL}/users/join`,
-        { username, password },
+        { nickname,email, password },
         { withCredentials: true }
       );
 

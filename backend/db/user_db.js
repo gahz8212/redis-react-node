@@ -6,39 +6,40 @@ const pool = require("./db");
  * - 로그인용
  * - 반환: { id, username, created_at } 또는 null
  */
-async function findUserByCredentials(username, password) {
+async function findUserByCredentials(email, password) {
   const [rows] = await pool.query(
-    "SELECT id, username, created_at FROM users WHERE username = ? AND password = ?",
-    [username, password]
+    "SELECT id, nickname, created_at FROM users WHERE email = ? AND password = ?",
+    [email, password]
   );
   if (!rows || rows.length === 0) return null;
   return rows[0];
 }
 async function findUserById(id) {
   const [rows] = await pool.query(
-    "SELECT id, username, created_at FROM users WHERE id = ? ",
+    "SELECT id, nickname, created_at FROM users WHERE id = ? ",
     [id]
   );
   if (!rows || rows.length === 0) return null;
   return rows[0];
 }
-async function findUserByUsername(username) {
+async function findUserByEmail(email) {
   const [rows] = await pool.query(
-    "SELECT id, username,password FROM users WHERE username = ? ",
-    [username]
+    "SELECT id, nickname,password FROM users WHERE email = ? ",
+    [email]
   );
   if (!rows || rows.length === 0) return null;
   return rows[0];
 }
-async function createUser(username, password) {
-  await pool.query("INSERT INTO USERS (username,password)VALUES(?,?)", [
-    username,
+async function createUser(nickname, email, password) {
+  await pool.query("INSERT INTO USERS (nickname,email,password)VALUES(?,?,?)", [
+    nickname,
+    email,
     password,
   ]);
 }
 module.exports = {
   findUserByCredentials,
   findUserById,
-  findUserByUsername,
+  findUserByEmail,
   createUser,
 };

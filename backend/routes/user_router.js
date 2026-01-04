@@ -1,6 +1,6 @@
 // server/routes/users.js
 const express = require("express");
-const { findUserByUsername, createUser } = require("../db/user_db");
+const { findUserByEmail, createUser } = require("../db/user_db");
 const bcrypt = require("bcrypt");
 const router = express.Router();
 const passport = require("passport");
@@ -23,7 +23,7 @@ router.post("/login", (req, res, next) => {
 
       return res.json({
         message: "로그인 성공",
-        user: { id: user.id, username: user.username },
+        user: { id: user.id, nickname: user.nickname, email: user.email },
       });
     });
   })(req, res, next);
@@ -45,20 +45,20 @@ router.get("/me", (req, res) => {
 
 // POST /api/users/join - 회원가입
 router.post("/join", async (req, res) => {
-  const { username, password } = req.body;
-  // console.log("username", username);
-  if (!username || !password) {
+  const { nickname, email, password } = req.body;
+  console.log(nickname, email, password);
+  if (!nickname || !email || !password) {
     return res.status(400).json({ error: "이메일과 비밀번호를 입력해주세요." });
   }
   try {
-    const user = await findUserByUsername(username);
+    const user = await findUserByEmail(email);
     if (user) {
       return res.status(401).json({ error: "이미 등록된 유저명 입니다." });
     }
     const hash = await bcrypt.hash(password, 12);
     // console.log(hash);
-    await createUser(username, hash);
-    return res.status(200).json({message:'회원가입 성공'});
+    await createUser(nickname, email, hash);
+    return res.status(200).json({ message: "회원가입 성공" });
   } catch (e) {
     console.error(e);
   }
