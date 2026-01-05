@@ -1,27 +1,30 @@
 const Sequelize = require("sequelize");
-module.exports = class Users extends Sequelize.Model {
+module.exports = class Destinations extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        nickname: {
-          type: Sequelize.STRING(50),
+        no: {
+          type: Sequelize.INTEGER,
           allowNull: false,
         },
-        email: {
-          type: Sequelize.STRING(150),
-          allowNull: false,
-          unique: true,
-        },
-        password: {
+        name: {
           type: Sequelize.STRING(200),
           allowNull: false,
         },
+        local:{
+          type:Sequelize.STRING(400),
+          allowNull:false
+        },
+        theme:{
+          type:Sequelize.STRING(2),
+          allowNull:false
+        }
       },
       {
         sequelize,
         timestamps: true,
         underscored: false,
-        modelName: "User",
+        modelName: "Destinations",
         paranoid: false,
         charset: "utf8",
         collate: "utf8_general_ci",
@@ -29,8 +32,7 @@ module.exports = class Users extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.User.belongsToMany(db.Trip, { through: "UserTrip" });
-    db.User.hasMany(db.Post);
-    db.User.hasMany(db.Photo);
+    db.Emotion_target.belongsTo(db.Trip);
+    db.Emotion_target.belongsTo(db.Photo);
   }
 };

@@ -8,7 +8,7 @@ const pool = require("./db");
  */
 async function getAllPosts() {
   const [rows] = await pool.query(
-    "SELECT * FROM trip ORDER BY created_at DESC"
+    "SELECT * FROM trips ORDER BY createdAt DESC"
   );
   console.log(rows);
   return rows;

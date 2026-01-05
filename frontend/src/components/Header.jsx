@@ -20,7 +20,7 @@ function Header() {
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errMessage, setErrMessage] = useState(true);
+  // const [errMessage, setErrMessage] = useState(true);
   const [select, setSelect] = useState(true);
 
   const handleLogin = async (e) => {

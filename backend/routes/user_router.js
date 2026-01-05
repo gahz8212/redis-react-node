@@ -67,7 +67,7 @@ router.post("/join", async (req, res) => {
     const hash = await bcrypt.hash(password, 12);
     // console.log(hash);
     // await createUser(nickname, email, hash);
-    await User.create({ nickname, email, hash });
+    await User.create({ nickname, email, password: hash });
     return res.status(200).json({ message: "회원가입 성공" });
   } catch (e) {
     console.error(e);

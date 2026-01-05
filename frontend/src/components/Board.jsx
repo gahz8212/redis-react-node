@@ -106,7 +106,7 @@ function Board({ title = "자유 게시판" }) {
             <div className="post-content">
               <strong>{post.title}</strong>
               {post.content && <p>{post.content}</p>}
-              <small>{new Date(post.created_at).toLocaleString("ko-KR")}</small>
+              <small>{new Date(post.createdAt).toLocaleString("ko-KR")}</small>
             </div>
             <button
               onClick={() => handleDelete(post.id)}

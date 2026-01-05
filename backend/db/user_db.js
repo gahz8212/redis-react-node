@@ -4,11 +4,11 @@ const pool = require("./db");
 /**
  * username + password로 사용자 조회
  * - 로그인용
- * - 반환: { id, username, created_at } 또는 null
+ * - 반환: { id, username, createdAt } 또는 null
  */
 async function findUserByCredentials(email, password) {
   const [rows] = await pool.query(
-    "SELECT id, nickname, created_at FROM users WHERE email = ? AND password = ?",
+    "SELECT id, nickname, createdAt FROM users WHERE email = ? AND password = ?",
     [email, password]
   );
   if (!rows || rows.length === 0) return null;
@@ -16,7 +16,7 @@ async function findUserByCredentials(email, password) {
 }
 async function findUserById(id) {
   const [rows] = await pool.query(
-    "SELECT id, nickname, created_at FROM users WHERE id = ? ",
+    "SELECT id, nickname, createdAt FROM users WHERE id = ? ",
     [id]
   );
   if (!rows || rows.length === 0) return null;

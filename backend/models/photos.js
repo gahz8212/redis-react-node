@@ -7,14 +7,25 @@ module.exports = class Photos extends Sequelize.Model {
           type: Sequelize.STRING(200),
           allowNull: false,
         },
-        category: {
-          type: Sequelize.STRING(50),
+        url: {
+          type: Sequelize.STRING(255),
           allowNull: false,
         },
-        favorite: {
-          type: Sequelize.TINYINT,
+        takenAt: {
+          type: Sequelize.DATE,
           allowNull: false,
-          defaultValue: false,
+        },
+        latitude: {
+          type: Sequelize.FLOAT(10, 3),
+          allowNull: true,
+        },
+        longtitude: {
+          type: Sequelize.FLOAT(10, 3),
+          allowNull: true,
+        },
+        address: {
+          type: Sequelize.STRING(100),
+          allowNull: true,
         },
       },
       {
@@ -30,6 +41,10 @@ module.exports = class Photos extends Sequelize.Model {
   }
   static associate(db) {
     db.Photo.hasMany(db.Post);
+    db.Photo.belongsTo(db.User);
     db.Photo.belongsTo(db.Trip);
+    db.Photo.belongsTo(db.Category);
+    db.Photo.belongsTo(db.PhotoCategoryMap);
+    db.Photo.belongsTo(db.Emotiontarget);
   }
 };
