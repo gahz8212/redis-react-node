@@ -7,11 +7,11 @@ const Trip = require("./trips");
 const Photo = require("./photos");
 const Post = require("./posts");
 const Emotion = require("./emotions");
-const EmotionsTarget = require("./emotionstarget");
+const EmotionsTarget = require("./emotionstargets");
 const Destination = require("./destinations");
 const Theme = require("./themes");
-const PhotoCategoryMap = require("./photoCategoryMap");
-const Category = require("./category");
+const PhotoCategoryMap = require("./photoCategoryMaps");
+const Category = require("./categories");
 
 const db = {};
 

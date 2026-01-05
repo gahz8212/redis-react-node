@@ -11,20 +11,20 @@ module.exports = class Destinations extends Sequelize.Model {
           type: Sequelize.STRING(200),
           allowNull: false,
         },
-        local:{
-          type:Sequelize.STRING(400),
-          allowNull:false
+        local: {
+          type: Sequelize.STRING(400),
+          allowNull: false,
         },
-        theme:{
-          type:Sequelize.STRING(2),
-          allowNull:false
-        }
+        theme: {
+          type: Sequelize.STRING(2),
+          allowNull: false,
+        },
       },
       {
         sequelize,
         timestamps: true,
         underscored: false,
-        modelName: "Destinations",
+        modelName: "Destination",
         paranoid: false,
         charset: "utf8",
         collate: "utf8_general_ci",
@@ -32,7 +32,7 @@ module.exports = class Destinations extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.Emotion_target.belongsTo(db.Trip);
-    db.Emotion_target.belongsTo(db.Photo);
+    db.Destination.belongsTo(db.Trip);
+    db.Destination.belongsTo(db.Photo);
   }
 };
