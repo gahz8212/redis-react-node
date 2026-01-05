@@ -1,14 +1,12 @@
 const Sequelize = require("sequelize");
-module.exports = class Theme extends Sequelize.Model {
+module.exports = class Themes extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-
-        themecode:{
-          type:Sequelize.STRING(2),
-          allowNull:false,
-        }
-      
+        themecode: {
+          type: Sequelize.STRING(2),
+          allowNull: false,
+        },
       },
       {
         sequelize,
@@ -21,7 +19,5 @@ module.exports = class Theme extends Sequelize.Model {
       }
     );
   }
-  static associate(db) {
-   
-  }
+  static associate(db) {}
 };

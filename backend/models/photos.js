@@ -45,6 +45,6 @@ module.exports = class Photos extends Sequelize.Model {
     db.Photo.belongsTo(db.Trip);
     db.Photo.belongsTo(db.Category);
     db.Photo.belongsTo(db.PhotoCategoryMap);
-    db.Photo.belongsTo(db.Emotiontarget);
+    db.Photo.belongsTo(db.EmotionsTarget);
   }
 };
