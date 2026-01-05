@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "4321",
+    "password": "1234",
     "database": "trip-db",
     "port": "3306",
     "host": "127.0.0.1",
@@ -16,7 +16,7 @@
   },
   "production": {
     "username": "root",
-    "password": "4321",
+    "password": "1234",
     "database": "trip-db",
     "port": "3306",
     "host": "127.0.0.1",
