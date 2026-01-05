@@ -25,17 +25,35 @@ sequelize
     console.error(e);
   });
 
-  
 // app.js 또는 server.js
 
 const app = express();
 app.use(
   cors({
-    origin: "http://192.168.45.76:8081", // 앱 개발 시 사용하는 주소 (또는 true)
+    origin: "http://192.168.45.168:8081", // 앱 개발 시 사용하는 주소 (또는 true)
     // origin: 'http://192.168.10.56:8081', // 앱 개발 시 사용하는 주소 (또는 true)
     credentials: true, // 쿠키/세션 통신 허용
   })
 );
+
+const allowedOrigins = [
+  'http://localhost:5173',      // 리액트(Vite) 로컬 개발 서버
+  'http://192.168.45.168:8081', // 안드로이드/기타 기기 접속 주소
+  'http://127.0.0.1:5173',
+  'http://192.168.10.56:8081'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // origin이 없으면(예: Postman 등) 허용, 있으면 리스트에 있는지 확인
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // 세션/쿠키를 사용하므로 필수!
+}));
 passportConfig();
 
 app.set("port", process.env.PORT || 5000);
