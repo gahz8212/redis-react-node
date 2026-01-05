@@ -3,7 +3,7 @@
     "username": "root",
     "password": "1234",
     "database": "trip-db",
-    "port": "3306",
+    "port": "3307",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
@@ -18,7 +18,7 @@
     "username": "root",
     "password": "1234",
     "database": "trip-db",
-    "port": "3306",
+    "port": "3307",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }
