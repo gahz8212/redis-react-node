@@ -3,19 +3,31 @@ module.exports = class Trips extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
+        // dest: {
+        //   type: Sequelize.STRING(20),
+        //   allowNull: false,
+        // },
+        // thumnail: {
+        //   type: Sequelize.STRING(200),
+        //   allowNull: false,
+        // },
+        // category: {
+        //   type: Sequelize.STRING(50),
+        //   allowNull: false,
+        // },
+        // Transportation: {
+        //   type: Sequelize.ENUM,
+        //   values: ["Car", "Bus", "Taxi", "Train", "Airplane", "Bicycle"],
+        // },
+        // contents: {
+        //   type: Sequelize.TEXT,
+        //   allowNull: true,
+        // },
+        // costs: {
+        //   type: Sequelize.INTEGER,
+        //   defaultValue: 0,
+        // },
         title: {
-          type: Sequelize.STRING(50),
-          allowNull: false,
-        },
-        dest: {
-          type: Sequelize.STRING(20),
-          allowNull: false,
-        },
-        thumnail: {
-          type: Sequelize.STRING(200),
-          allowNull: false,
-        },
-        category: {
           type: Sequelize.STRING(50),
           allowNull: false,
         },
@@ -23,15 +35,11 @@ module.exports = class Trips extends Sequelize.Model {
           type: Sequelize.STRING(200),
           allowNull: true,
         },
-        Transportation: {
-          type: Sequelize.ENUM,
-          values: ["Car", "Bus", "Taxi", "Train", "Airplane", "Bicycle"],
-        },
-        contents: {
+        plan: {
           type: Sequelize.TEXT,
-          allowNull: true,
+          allowNull: false,
         },
-        costs: {
+        score: {
           type: Sequelize.INTEGER,
           defaultValue: 0,
         },
@@ -49,6 +57,7 @@ module.exports = class Trips extends Sequelize.Model {
   }
   static associate(db) {
     db.Trip.hasMany(db.Photo);
+    db.Trip.hasMany(db.Emotionstarget);
     db.Trip.belongsToMany(db.User, { through: "UserTrip" });
   }
 };
