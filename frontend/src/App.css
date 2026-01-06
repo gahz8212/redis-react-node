@@ -98,8 +98,9 @@ button:active {
 
 .header-right {
   padding: 10px 20px;
-  /* background: yellow; */
+  margin-bottom: 2rem;
 
+  /* background: yellow; */
   /* display: flex;
   align-items: center;
   gap: 12px; */
@@ -160,6 +161,14 @@ button:active {
   text-align: right;
   margin: 10px;
   cursor: pointer;
+  user-select: none;
+  color: #999;
+}
+.authSelector:active {
+  transform: translateY(1px);
+}
+.authSelector:hover {
+  color: #333;
 }
 /* 로그인 후 */
 .user-info {
@@ -276,16 +285,19 @@ button:active {
 }
 .loadingCircle {
   position: absolute;
-  border-radius: 50%;
-  width: 100px;
-  height: 100px;
-  border-top: 15px solid aqua;
-  border-left: 15px solid aqua;
-  border-right: 15px solid aqua;
-  border-bottom: 15px solid transparent;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  box-sizing: border-box; /* border 포함 크기 계산 */
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+
+  border-top: 15px solid #88ac73;
+  border-left: 15px solid #88ac73;
+  border-right: 15px solid #88ac73;
+  border-bottom: 15px solid transparent;
+
   animation: spin 2s linear infinite;
 }
 
@@ -366,6 +378,9 @@ button:active {
   text-align: center;
   font-size: 1.2rem;
 }
+.MainNav ul li:active {
+  transform: translateY(1px);
+}
 .MainNav ul li.check {
   background-color: #88ac73;
   /* opacity: 0.2; */
@@ -438,9 +453,9 @@ button:active {
 
 @keyframes spin {
   0% {
-    transform: rotate(0deg);
+    transform: translate(-50%, -50%) rotate(0deg);
   }
   100% {
-    transform: rotate(360deg);
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }

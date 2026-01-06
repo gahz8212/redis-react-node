@@ -1,7 +1,7 @@
-import React from "react";
+
 
 const DashBoard = () => {
-  return <div>DashBoard</div>;
+  return <div className="album container">DashBoard</div>;
 };
 
 export default DashBoard;
