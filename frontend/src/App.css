@@ -96,20 +96,6 @@ button:active {
   line-height: 1.1;
 }
 
-/* .header-left .MainNav {
-  background: yellow;
-  margin-top: 8px;
-  color: var(--muted);
-  font-size: 14px;
-  margin-left: 100px;
-}
-.header-left .logo {
-  background: yellow;
-  margin-top: 8px;
-  color: var(--muted);
-  font-size: 14px;
-} */
-
 .header-right {
   padding: 10px 20px;
   /* background: yellow; */
@@ -187,7 +173,7 @@ button:active {
   padding: 0 12px;
   border: 1px solid var(--border);
   border-radius: 10px;
-  background: #fff;
+  background: #88ac73;
 }
 
 /* ---------- Board ---------- */
@@ -381,18 +367,16 @@ button:active {
   font-size: 1.2rem;
 }
 .MainNav ul li.check {
-  background-color: rgb(152, 240, 240);
+  background-color: #88ac73;
   /* opacity: 0.2; */
   border-radius: 12px;
   color: black;
-  z-index: -2;
-  position: relative;
 }
 .MainNav ul li::before {
   content: "";
   width: 0%;
   position: absolute;
-  background-color: cyan;
+  background-color: #88ac73;
   bottom: 1px;
   left: 50%;
   transform: translateX(-50%);
@@ -402,7 +386,7 @@ button:active {
 }
 .MainNav ul li:hover::before {
   height: 45px;
-  width: 120%;
+  width: 105%;
   border-radius: 12px;
   opacity: 0.2;
 }
