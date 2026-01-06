@@ -27,6 +27,14 @@ module.exports = class Photos extends Sequelize.Model {
           type: Sequelize.STRING(100),
           allowNull: true,
         },
+        createdAt: {
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.NOW,
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.NOW,
+        },
       },
       {
         sequelize,
@@ -40,11 +48,10 @@ module.exports = class Photos extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.Photo.hasMany(db.Post);
+    db.Photo.hasOne(db.Post);
     db.Photo.belongsTo(db.User);
     db.Photo.belongsTo(db.Trip);
-    db.Photo.belongsTo(db.Category);
-    db.Photo.belongsTo(db.PhotoCategoryMap);
+    db.Photo.hasMany(db.PhotoCategoryMap);
     db.Photo.belongsTo(db.EmotionsTarget);
   }
 };

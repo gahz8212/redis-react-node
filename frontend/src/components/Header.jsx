@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useAuthStore } from "../../store/authStore";
+import { useAuthStore } from "../store/authStore";
 import Login from "./auth/Login";
 import Join from "./auth/Join";
+import Navigation from "./nav/MainNav";
 // import Loading from "./Loading";
-import { fetchPosts, logoutList } from "./Board";
-import { useEffect } from "react";
+
 function Header() {
   // Zustand에서 상태와 액션 가져오기
   const {
@@ -31,7 +31,7 @@ function Header() {
       setNickname("");
       setEmail("");
       setPassword("");
-      fetchPosts();
+      // fetchPosts();
     }
   };
 
@@ -39,20 +39,21 @@ function Header() {
     await authJoin(nickname, email, password);
   };
   const handleLogout = () => {
-    logoutList();
     logout();
+    // logoutList();
   };
-  useEffect(() => {
-    setTimeout(() => {
-      setErrMessage(false);
-    }, 3000);
-  }, [error]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setErrMessage(false);
+  //   }, 3000);
+  // }, [error]);
 
   return (
     <header className="header">
       <div className="container header-content">
         <div className="header-left">
-          <img src="/assets/img/tripy.png" width="300" height="300" />
+          <img className="logo" src="/assets/img/tripy.png" width="200px" />
+          <Navigation />
         </div>
 
         <div className="header-right">

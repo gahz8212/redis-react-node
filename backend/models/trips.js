@@ -19,6 +19,14 @@ module.exports = class Trips extends Sequelize.Model {
           type: Sequelize.INTEGER,
           defaultValue: 0,
         },
+        createdAt: {
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.NOW,
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.NOW,
+        },
       },
       {
         sequelize,
@@ -35,6 +43,7 @@ module.exports = class Trips extends Sequelize.Model {
     db.Trip.hasMany(db.Photo);
     db.Trip.hasMany(db.EmotionsTarget);
     db.Trip.belongsToMany(db.User, { through: "UserTrip" });
+    db.Trip.hasMany(db.Theme);
   }
 };
 

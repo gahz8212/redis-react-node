@@ -4,14 +4,15 @@
     "password": "1234",
     "database": "trip-db",
     "port": "3307",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "host": "localhost",
+    "dialect": "mysql",
+    "logging": false
   },
   "test": {
     "username": "root",
     "password": null,
     "database": "trip-db",
-    "host": "127.0.0.1",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "production": {
@@ -19,7 +20,7 @@
     "password": "1234",
     "database": "trip-db",
     "port": "3307",
-    "host": "127.0.0.1",
+    "host": "localhost",
     "dialect": "mysql"
   }
 }

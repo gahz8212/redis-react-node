@@ -82,7 +82,12 @@ button:active {
   gap: 16px;
   padding: 22px 0;
 }
-
+.header-left {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 40%;
+}
 .header-left h1 {
   margin: 0;
   font-size: 44px;
@@ -91,11 +96,19 @@ button:active {
   line-height: 1.1;
 }
 
-.header-left nav {
+/* .header-left .MainNav {
+  background: yellow;
   margin-top: 8px;
   color: var(--muted);
   font-size: 14px;
+  margin-left: 100px;
 }
+.header-left .logo {
+  background: yellow;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 14px;
+} */
 
 .header-right {
   padding: 10px 20px;
@@ -350,6 +363,49 @@ button:active {
   color: var(--muted);
   padding: 18px 0;
 }
+/*----------Navigator------------*/
+
+.MainNav ul {
+  list-style: none; /* 불릿 제거 */
+  padding-left: 0; /* 기본 들여쓰기 제거 */
+  margin: 0; /* 필요시 margin도 제거 */
+  padding: 0;
+  display: flex;
+}
+.MainNav ul li {
+  display: block;
+  padding: 8px;
+  margin: 0 10px;
+  position: relative;
+  text-align: center;
+  font-size: 1.2rem;
+}
+.MainNav ul li.check {
+  background-color: rgb(152, 240, 240);
+  /* opacity: 0.2; */
+  border-radius: 12px;
+  color: black;
+  z-index: -2;
+  position: relative;
+}
+.MainNav ul li::before {
+  content: "";
+  width: 0%;
+  position: absolute;
+  background-color: cyan;
+  bottom: 1px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0.2;
+  transition: 0.4s;
+  /* display: inline-block; */
+}
+.MainNav ul li:hover::before {
+  height: 45px;
+  width: 120%;
+  border-radius: 12px;
+  opacity: 0.2;
+}
 
 /* ---------- Footer ---------- */
 .footer {
@@ -363,12 +419,12 @@ button:active {
 }
 
 /* ---------- Responsive ---------- */
-@media (max-width: 780px) {
-  .header-content {
-    flex-direction: column;
-    align-items: flex-start;
+@media (max-width: 1300px) {
+  .MainNav ul {
+    display: flex;
   }
-
+}
+@media (max-width: 780px) {
   .auth-form {
     width: 100%;
     flex-wrap: wrap;

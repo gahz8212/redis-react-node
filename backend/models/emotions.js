@@ -11,6 +11,14 @@ module.exports = class Emotions extends Sequelize.Model {
           type: Sequelize.STRING(1),
           allowNull: false,
         },
+        createdAt: {
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.NOW,
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.NOW,
+        },
       },
       {
         sequelize,
