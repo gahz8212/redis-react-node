@@ -7,6 +7,14 @@ module.exports = class PhotoCategoryMaps extends Sequelize.Model {
           type: Sequelize.FLOAT(2, 1),
           allowNull: false,
         },
+        createdAt: {
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.NOW,
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.NOW,
+        },
       },
       {
         sequelize,
@@ -20,7 +28,7 @@ module.exports = class PhotoCategoryMaps extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.PhotoCategoryMap.hasMany(db.Photo);
-    db.PhotoCategoryMap.hasMany(db.Category);
+    db.PhotoCategoryMap.belongsTo(db.Photo);
+    db.PhotoCategoryMap.belongsTo(db.Category);
   }
 };

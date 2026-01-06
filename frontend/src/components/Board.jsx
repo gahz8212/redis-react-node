@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 // import Loading from "./Loading";
-import { useAuthStore } from "../../store/authStore";
+import { useAuthStore } from "../store/authStore";
 /**
  * API 기본 경로
  * - 개발(로컬): vite proxy를 통해 /api -> http://localhost:5000
@@ -120,19 +120,5 @@ function Board({ title = "자유 게시판" }) {
     </div>
   );
 }
-instance.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    console.log("error", error.response.data.error);
-    if (error.response && error.response.status === 401) {
-      // Zustand 상태 초기화
-      alert(error.response.data.error);
-      useAuthStore.getState().logout();
-      // 로그인 버튼 표시
-    } else {
-      alert(error.response.data.error);
-    }
-    return Promise.reject(error);
-  }
-);
+
 export default Board;

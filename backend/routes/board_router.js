@@ -19,7 +19,7 @@ function requireAuth(req, res, next) {
 }
 
 // ==================== 게시글 목록 ====================
-router.get("/", requireAuth, async (req, res) => {
+router.get("/posts", requireAuth, async (req, res) => {
   try {
     const posts = await getAllPosts();
 

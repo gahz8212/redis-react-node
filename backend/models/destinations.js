@@ -19,6 +19,14 @@ module.exports = class Destinations extends Sequelize.Model {
           type: Sequelize.STRING(2),
           allowNull: false,
         },
+        createdAt: {
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.NOW,
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.NOW,
+        },
       },
       {
         sequelize,
@@ -31,8 +39,5 @@ module.exports = class Destinations extends Sequelize.Model {
       }
     );
   }
-  static associate(db) {
-    db.Destination.belongsTo(db.Trip);
-    db.Destination.belongsTo(db.Photo);
-  }
+  static associate(db) {}
 };
