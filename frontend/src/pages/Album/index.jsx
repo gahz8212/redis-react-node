@@ -1,7 +1,7 @@
-import React from "react";
+
 
 const Album = () => {
-  return <div>Album</div>;
+  return <div className="album container">Album</div>;
 };
 
 export default Album;

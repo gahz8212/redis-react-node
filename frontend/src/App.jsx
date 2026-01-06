@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect } from "react";
 import { useAuthStore } from "./store/authStore";
 import Header from "./components/Header";
@@ -8,6 +9,7 @@ import DashBoard from "./pages/DashBoard";
 import Board from "./pages/Board";
 import Album from "./pages/Album";
 import Theme from "./pages/Theme";
+import Loading from "./components/Loading";
 import "./App.css";
 
 function App() {
@@ -25,9 +27,11 @@ function App() {
           justifyContent: "center",
           alignItems: "center",
           height: "100vh",
+          opcity: 0.2,
         }}
       >
-        <p>로그인 상태를 확인하고 있습니다...</p>
+        {/* <p>로그인 상태를 확인하고 있습니다...</p> */}
+        <Loading />
       </div>
     );
   }
