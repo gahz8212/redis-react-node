@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 // import Loading from "./Loading";
 import { useAuthStore } from "../store/authStore";
+import { DisplayOnAuth } from "../contexts/display_on_Auth";
 /**
  * API 기본 경로
  * - 개발(로컬): vite proxy를 통해 /api -> http://localhost:5000
@@ -11,25 +12,24 @@ import { useAuthStore } from "../store/authStore";
 const API_URL = import.meta.env.VITE_API_URL || "/api";
 //★ instance 객체를 사용해서 에러를 하나로 모아서 alert창으로 획일적으로 보여준다
 const instance = axios.create({
-  widthCredentials: true,
+  withCredentials: true,
 });
 
-export let fetchPosts = null;
-export let logoutList = null;
+export let fetchPostsFunc = null;
+
 function Board({ title = "자유 게시판" }) {
-  const [posts, setPosts] = useState([]);
   const [newTitle, setNewTitle] = useState("");
   const [newContent, setNewContent] = useState("");
   const [loading, setLoading] = useState(false);
+  const { posts, setPosts } = useContext(DisplayOnAuth);
 
   useEffect(() => {
     fetchPosts();
+    fetchPostsFunc = fetchPosts;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  logoutList = () => {
-    setPosts([]);
-  };
-  fetchPosts = async () => {
+
+  const fetchPosts = async () => {
     try {
       setLoading(true);
       const res = await instance.get(`${API_URL}/posts`);

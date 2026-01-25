@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuthStore } from "./store/authStore";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -10,10 +10,12 @@ import Board from "./pages/Board";
 import Album from "./pages/Album";
 import Theme from "./pages/Theme";
 import Loading from "./components/Loading";
+import { DisplayOnAuth } from "./contexts/display_on_Auth";
 import "./App.css";
 
 function App() {
   const { user, isChecking, checkAuth } = useAuthStore();
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     // 새로고침 하자마자 서버에 세션 유효성 확인
@@ -37,16 +39,18 @@ function App() {
   }
   return (
     <div className="App">
-      <Header />
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/dash" element={<DashBoard />} />
-          <Route path="/board" element={<Board />} />
-          <Route path="/album" element={<Album />} />
-          <Route path="/theme" element={<Theme />} />
-        </Routes>
-      </main>
+      <DisplayOnAuth.Provider value={{ posts, setPosts }}>
+        <Header />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/dash" element={<DashBoard />} />
+            <Route path="/board" element={<Board />} />
+            <Route path="/album" element={<Album />} />
+            <Route path="/theme" element={<Theme />} />
+          </Routes>
+        </main>
+      </DisplayOnAuth.Provider>
       <Footer />
     </div>
   );

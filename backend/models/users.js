@@ -33,12 +33,12 @@ module.exports = class Users extends Sequelize.Model {
         paranoid: false,
         charset: "utf8",
         collate: "utf8_general_ci",
-      }
+      },
     );
   }
   static associate(db) {
-    db.User.belongsToMany(db.Trip, { through: "UserTrip" });
-    db.User.hasMany(db.Post);
+    db.User.hasMany(db.Trip);
+
     db.User.hasMany(db.Photo);
   }
 };

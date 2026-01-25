@@ -48,10 +48,9 @@ module.exports = class Photos extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.Photo.hasOne(db.Post);
+
     db.Photo.belongsTo(db.User);
     db.Photo.belongsTo(db.Trip);
-    db.Photo.hasMany(db.PhotoCategoryMap);
-    db.Photo.belongsTo(db.EmotionsTarget);
+
   }
 };

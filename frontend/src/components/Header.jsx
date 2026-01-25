@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useAuthStore } from "../store/authStore";
 import Login from "./auth/Login";
 import Join from "./auth/Join";
 import Navigation from "./nav/MainNav";
+import { fetchPostsFunc } from "./Board";
 // import Loading from "./Loading";
-
+import { DisplayOnAuth } from "../contexts/display_on_Auth";
 function Header() {
   // Zustand에서 상태와 액션 가져오기
   const {
@@ -22,7 +23,7 @@ function Header() {
   const [password, setPassword] = useState("");
   // const [errMessage, setErrMessage] = useState(true);
   const [select, setSelect] = useState(true);
-
+  const { setPosts } = useContext(DisplayOnAuth);
   const handleLogin = async (e) => {
     e.preventDefault();
     const result = await authLogin(email, password);
@@ -31,7 +32,7 @@ function Header() {
       setNickname("");
       setEmail("");
       setPassword("");
-      // fetchPosts();
+      fetchPostsFunc();
     }
   };
 
@@ -39,6 +40,7 @@ function Header() {
     await authJoin(nickname, email, password);
   };
   const handleLogout = () => {
+    setPosts([]);
     logout();
     // logoutList();
   };

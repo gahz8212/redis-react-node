@@ -19,7 +19,7 @@ function requireAuth(req, res, next) {
 }
 
 // ==================== 게시글 목록 ====================
-router.get("/posts", requireAuth, async (req, res) => {
+router.get("/", requireAuth, async (req, res) => {
   try {
     const posts = await getAllPosts();
 
@@ -86,7 +86,7 @@ router.delete("/:id", requireAuth, async (req, res) => {
     }
 
     // 2. 본인 게시글이 아닌 경우 차단
-    if (post.user_id !== userId && post.userid !== userId) {
+    if (post.UserId !== userId && post.UserId !== userId) {
       // DB 컬럼명에 따라 둘 중 하나 사용
       return res
         .status(403)

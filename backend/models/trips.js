@@ -36,14 +36,13 @@ module.exports = class Trips extends Sequelize.Model {
         paranoid: false,
         charset: "utf8",
         collate: "utf8_general_ci",
-      }
+      },
     );
   }
   static associate(db) {
     db.Trip.hasMany(db.Photo);
-    db.Trip.hasMany(db.EmotionsTarget);
-    db.Trip.belongsToMany(db.User, { through: "UserTrip" });
-    db.Trip.hasMany(db.Theme);
+
+    db.Trip.belongsTo(db.User);
   }
 };
 

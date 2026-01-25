@@ -8,7 +8,7 @@ const pool = require("./db");
  */
 async function getAllPosts() {
   const [rows] = await pool.query(
-    "SELECT * FROM trips ORDER BY createdAt DESC"
+    "SELECT * FROM trips ORDER BY createdAt DESC",
   );
   console.log(rows);
   return rows;
@@ -20,8 +20,8 @@ async function getAllPosts() {
  */
 async function createPost(title, content, user_id) {
   const [result] = await pool.query(
-    "INSERT INTO trip (title, content, user_id) VALUES (?, ?, ?)",
-    [title, content, user_id]
+    "INSERT INTO trips (title, description, UserId) VALUES (?, ?, ?)",
+    [title, content, user_id],
   );
   return result.insertId;
 }
@@ -31,7 +31,7 @@ async function createPost(title, content, user_id) {
  * 반환: post 또는 null
  */
 async function getPostById(id) {
-  const [rows] = await pool.query("SELECT * FROM trip WHERE id = ?", [id]);
+  const [rows] = await pool.query("SELECT * FROM trips WHERE id = ?", [id]);
   console.log(rows[0]);
   if (!rows || rows.length === 0) return null;
   return rows[0];
@@ -42,7 +42,7 @@ async function getPostById(id) {
  * 반환: affectedRows
  */
 async function deletePostById(id) {
-  const [result] = await pool.query("DELETE FROM trip WHERE id = ?", [id]);
+  const [result] = await pool.query("DELETE FROM trips WHERE id = ?", [id]);
   return result.affectedRows || 0;
 }
 
