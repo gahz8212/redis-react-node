@@ -41,16 +41,15 @@ module.exports = class Photos extends Sequelize.Model {
         timestamps: true,
         underscored: false,
         modelName: "Photo",
+        tableName: "photos",
         paranoid: false,
         charset: "utf8",
         collate: "utf8_general_ci",
-      }
+      },
     );
   }
   static associate(db) {
-
     db.Photo.belongsTo(db.User);
     db.Photo.belongsTo(db.Trip);
-
   }
 };

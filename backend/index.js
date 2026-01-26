@@ -11,28 +11,38 @@ const uploadRouter = require("./routes/upload_router");
 const passportConfig = require("./passport");
 const { RedisStore } = require("connect-redis");
 const { createClient } = require("redis");
-const redisClient = createClient();
+
+const redisClient = createClient({
+  url: `redis://${process.env.REDIS_HOST || "redis"}:6379`,
+});
 redisClient.connect().catch(console.error);
 
 // sequelize로 데이터베이스와 연결
 const { sequelize } = require("./models");
-sequelize
-  .sync({ force: false })
-  .then(() => {
-    console.log("데이터베이스 연결 성공");
-  })
-  .catch((e) => {
-    console.error(e);
-  });
+const connectWithRetry = async () => {
+  try {
+    console.log("🔄 DB 연결 시도 중...");
+    await sequelize.authenticate(); // 연결 테스트
+    console.log("✅ DB 연결 성공!");
+
+    // 이 코드가 실행되어야 테이블이 만들어집니다!
+    await sequelize.sync({ alter: true });
+    console.log("🚀 모든 테이블 생성 및 동기화 완료!");
+  } catch (err) {
+    console.error("❌ DB 연결 실패. 5초 후 다시 시도합니다...", err.message);
+    // 5초 후에 다시 시도 (컴퓨터 부하를 줄이기 위해 간격을 둡니다)
+    setTimeout(connectWithRetry, 5000);
+  }
+};
+
+connectWithRetry();
 
 // app.js 또는 server.js
 
 const app = express();
 
 const allowedOrigins = [
-  "http://localhost:5173", // 리액트(Vite) 로컬 개발 서버
-  "http://192.168.45.168:8081", // 안드로이드/기타 기기 접속 주소
-  "http://192.168.10.56:8081",
+  "http://localhost", // 리액트(Vite) 로컬 개발 서버
 ];
 
 app.use(
@@ -46,7 +56,7 @@ app.use(
       }
     },
     credentials: true, // 세션/쿠키를 사용하므로 필수!
-  })
+  }),
 );
 passportConfig();
 

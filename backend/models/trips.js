@@ -13,7 +13,7 @@ module.exports = class Trips extends Sequelize.Model {
         },
         plan: {
           type: Sequelize.TEXT,
-          allowNull: false,
+          allowNull: true,
         },
         score: {
           type: Sequelize.INTEGER,
@@ -33,6 +33,7 @@ module.exports = class Trips extends Sequelize.Model {
         timestamps: true,
         underscored: false,
         modelName: "Trip",
+        tableName: "trips",
         paranoid: false,
         charset: "utf8",
         collate: "utf8_general_ci",
