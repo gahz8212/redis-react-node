@@ -7,26 +7,7 @@ module.exports = class Photos extends Sequelize.Model {
           type: Sequelize.STRING(200),
           allowNull: false,
         },
-        url: {
-          type: Sequelize.STRING(255),
-          allowNull: false,
-        },
-        takenAt: {
-          type: Sequelize.DATE,
-          allowNull: false,
-        },
-        latitude: {
-          type: Sequelize.FLOAT(10, 3),
-          allowNull: true,
-        },
-        longtitude: {
-          type: Sequelize.FLOAT(10, 3),
-          allowNull: true,
-        },
-        address: {
-          type: Sequelize.STRING(100),
-          allowNull: true,
-        },
+        
         createdAt: {
           type: Sequelize.DATE,
           defaultValue: Sequelize.NOW,
