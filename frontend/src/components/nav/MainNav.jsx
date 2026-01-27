@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 const MainNav = () => {
   const [select, setSelect] = useState("home");
@@ -14,7 +14,7 @@ const MainNav = () => {
             Home
           </li>
         </Link>
-        <Link to="/dash">
+        {/* <Link to="/dash">
           <li
             className={`${select === "Dash" ? "check" : ""}`}
             onClick={() => setSelect("Dash")}
@@ -45,7 +45,7 @@ const MainNav = () => {
           >
             Theme
           </li>
-        </Link>
+        </Link> */}
       </ul>
     </div>
   );

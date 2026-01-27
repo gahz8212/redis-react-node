@@ -15,6 +15,11 @@
   --primary-weak: rgba(79, 70, 229, 0.12);
   --on-primary: #ffffff;
 
+  --secondary: #5aca38;
+  --secondary-hover: #5aca38;
+  --secondary-weak: rgba(79, 70, 229, 0.12);
+  --on-secondary: #ffffff;
+
   /* danger(삭제) */
   --danger: #ef4444;
   --danger-weak: rgba(239, 68, 68, 0.1);
@@ -57,14 +62,18 @@ main {
 }
 
 /* 공통 버튼 */
-button {
+button,
+.button {
   border: 1px solid var(--border);
   background: #fff;
   border-radius: 10px;
-  transition: background 0.15s ease, border-color 0.15s ease,
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
     transform 0.05s ease;
 }
-button:active {
+button:active,
+.button:active {
   transform: translateY(1px);
 }
 
@@ -261,10 +270,11 @@ button:active {
 }
 
 /* 글쓰기 버튼: primary */
-.write-form button {
-  grid-column: 1 / 2;
-  grid-row: 2 / 3;
-
+.write-form .buttons {
+  margin-left: auto;
+}
+.write-form button,
+.button {
   height: 42px;
   width: 120px;
   justify-self: end;
@@ -272,12 +282,22 @@ button:active {
   border-color: var(--primary);
   background: var(--primary);
   color: var(--on-primary);
+  & + & {
+    margin-left: 1rem;
+  }
 }
-.write-form button:hover {
+.write-form button:hover,
+.button:hover {
   background: var(--primary-hover);
   border-color: var(--primary-hover);
 }
-
+.write-form .button {
+  border-color: var(--secondary);
+  background: var(--secondary);
+  vertical-align: top;
+  text-align: center;
+  padding: 0.5em;
+}
 .loading {
   margin: 14px 0 0;
   color: var(--muted);

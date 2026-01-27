@@ -59,7 +59,7 @@ router.post("/", requireAuth, async (req, res) => {
         .json({ error: "게시글 생성 후 조회에 실패했습니다." });
     }
 
-    return res.status(201).json(newPost);
+    return res.status(201).json({ newPost, insertId });
   } catch (err) {
     console.error("게시글 작성 오류:", err);
     return res.status(500).json({ error: "서버 오류" });
