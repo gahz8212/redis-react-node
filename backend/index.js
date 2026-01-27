@@ -42,7 +42,7 @@ connectWithRetry();
 const app = express();
 
 const allowedOrigins = [
-  "http://localhost", // 리액트(Vite) 로컬 개발 서버
+  "http://localhost:5173", // 리액트(Vite) 로컬 개발 서버
 ];
 
 app.use(
