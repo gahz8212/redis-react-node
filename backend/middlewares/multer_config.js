@@ -11,7 +11,7 @@ if (!fs.existsSync(uploadDir)) {
 // 2. 스토리지 설정
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/");
+    cb(null, "/app/uploads/");
   },
   filename: (req, file, cb) => {
     // 한글 파일명 깨짐 방지 처리 (Buffer 사용)
