@@ -43,6 +43,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173", // 리액트(Vite) 로컬 개발 서버
+  "http://localhost", // nginx가 서버역할을 하므로 docker환경에서는 Vite 주소가 의미 없다
 ];
 
 app.use(
@@ -82,6 +83,7 @@ const sessionMiddleware = session({
 // 필수 미들웨어들
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/img", express.static(path.join(__dirname, "uploads")));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));

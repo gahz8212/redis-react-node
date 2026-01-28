@@ -10,7 +10,7 @@ import { DisplayOnAuth } from "../contexts/display_on_Auth";
  * - 별도 도메인/포트로 백엔드 운영 시: .env에 VITE_API_URL=http://<host>:5000/api 지정
  */
 const API_URL = import.meta.env.VITE_API_URL || "/api";
-const IMG_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/img/";
+const IMG_URL = import.meta.env.VITE_IMG_URL || "http://localhost:5000/img/";
 //★ instance 객체를 사용해서 에러를 하나로 모아서 alert창으로 획일적으로 보여준다
 const instance = axios.create({
   withCredentials: true,
