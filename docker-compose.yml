@@ -31,8 +31,8 @@ services:
     build: ./backend
     container_name: node_backend
     restart: always
-    expose:
-      - "5000"
+    ports:
+      - "5000:5000"
     environment:
       - NODE_ENV=development
       - DB_HOST=db

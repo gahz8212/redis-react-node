@@ -3,8 +3,8 @@
     "username": "root",
     "password": "1234",
     "database": "trip-db",
-    "port": "3307",
-    "host": "localhost",
+    "port": "3306",
+    "host": "db",
     "dialect": "mysql",
     "logging": false
   },
@@ -12,16 +12,16 @@
     "username": "root",
     "password": null,
     "database": "trip-db",
-    "host": "localhost",
-    "port": "3307",
+    "host": "db",
+    "port": "3306",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
     "password": "1234",
     "database": "trip-db",
-    "port": "3307",
-    "host": "localhost",
+    "port": "3306",
+    "host": "db",
     "dialect": "mysql"
   }
 }
