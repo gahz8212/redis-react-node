@@ -82,6 +82,6 @@ export const useAuthStore = create(
     {
       name: "auth-storage", // 로컬스토리지 키
       partialize: (state) => ({ user: state.user }), // 유저 정보만 저장
-    }
-  )
+    },
+  ),
 );
