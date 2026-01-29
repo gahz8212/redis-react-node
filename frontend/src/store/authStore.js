@@ -1,13 +1,14 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import axios from "axios";
+import instance from "../api/instance";
+// import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL || "/api";
 
 // 공통 인스턴스 설정
-const instance = axios.create({
-  withCredentials: true, // 모든 요청에 쿠키 포함
-});
+// const instance = axios.create({
+//   withCredentials: true, // 모든 요청에 쿠키 포함
+// });
 
 export const useAuthStore = create(
   persist(
@@ -21,7 +22,7 @@ export const useAuthStore = create(
       checkAuth: async () => {
         try {
           set({ isChecking: true });
-          const res = await instance.get(`${API_URL}/users/me`);
+          const res = await instance.get(`/users/me`);
           // 백엔드 응답: { success: true, user: { id, username } }
           if (res.data.success) {
             set({ user: res.data.user, isChecking: false });
@@ -36,7 +37,7 @@ export const useAuthStore = create(
       login: async (email, password) => {
         set({ loading: true, error: null });
         try {
-          const res = await instance.post(`${API_URL}/users/login`, {
+          const res = await instance.post(`/users/login`, {
             email,
             password,
           });
@@ -53,7 +54,7 @@ export const useAuthStore = create(
       join: async (nickname, email, password) => {
         set({ loading: true, error: null });
         try {
-          const res = await instance.post(`${API_URL}/users/join`, {
+          const res = await instance.post(`/users/join`, {
             nickname,
             email,
             password,
@@ -69,7 +70,7 @@ export const useAuthStore = create(
 
       logout: async () => {
         try {
-          await instance.post(`${API_URL}/users/logout`);
+          await instance.post(`/users/logout`);
         } catch (e) {
           console.error("로그아웃 실패:", e);
         } finally {
@@ -82,6 +83,6 @@ export const useAuthStore = create(
     {
       name: "auth-storage", // 로컬스토리지 키
       partialize: (state) => ({ user: state.user }), // 유저 정보만 저장
-    }
-  )
+    },
+  ),
 );

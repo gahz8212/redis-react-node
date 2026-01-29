@@ -2,10 +2,13 @@ const express = require("express");
 const upload = require("../middlewares/multer_config.js");
 const router = express.Router();
 const albumService = require("../db/upload_db.js");
+const fs = require("fs");
+const path = require("path");
+const sharp = require("sharp");
 router.post("/", upload.single("image"), async (req, res) => {
   const { tripId } = req.body;
   console.log("파일 수신 완료:", req.file.filename);
-   try {
+  try {
     // 1. 로그인 여부 확인 (Passport가 제공하는 함수)
     if (!req.isAuthenticated())
       return res.status(401).json({ error: "로그인이 필요합니다." });
@@ -34,11 +37,11 @@ router.post("/", upload.single("image"), async (req, res) => {
       tripId,
       req.file.filename,
     );
-  const result = await albumService.uploadProcess(
-    req.user.id,
-    tripId,
-    req.file.filename,
-  );
-  res.json({ message: "서버 저장 성공!", fileName: req.file.filename });
+
+    res.json({ message: "서버 저장 성공!", fileName: req.file.filename });
+  } catch (e) {
+    console.error(e);
+    res.status(401).json({ message: e });
+  }
 });
 module.exports = router;

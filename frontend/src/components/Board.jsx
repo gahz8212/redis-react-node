@@ -1,20 +1,21 @@
 import { useEffect, useState, useContext } from "react";
-import axios from "axios";
+// import axios from "axios";
 // import Loading from "./Loading";
 import { useAuthStore } from "../store/authStore";
 import { DisplayOnAuth } from "../contexts/display_on_Auth";
+import instance from "../api/instance";
 /**
  * API 기본 경로
  * - 개발(로컬): vite proxy를 통해 /api -> http://localhost:5000
  * - 배포: 같은 도메인에서 서비스하면 기본값(/api)로 동작
  * - 별도 도메인/포트로 백엔드 운영 시: .env에 VITE_API_URL=http://<host>:5000/api 지정
  */
-const API_URL = import.meta.env.VITE_API_URL || "/api";
+// const API_URL = import.meta.env.VITE_API_URL || "/api";
 const IMG_URL = import.meta.env.VITE_IMG_URL || "http://localhost:5000/img/";
 //★ instance 객체를 사용해서 에러를 하나로 모아서 alert창으로 획일적으로 보여준다
-const instance = axios.create({
-  withCredentials: true,
-});
+// const instance = axios.create({
+//   withCredentials: true,
+// });
 
 export let fetchPostsFunc = null;
 
@@ -38,10 +39,8 @@ function Board({ title = "자유 게시판" }) {
   const fetchPosts = async () => {
     try {
       setLoading(true);
-      const res = await instance.get(`${API_URL}/posts`);
-      console.log("res.data", res.data);
+      const res = await instance.get(`/posts`);
       setPosts(res.data);
-      console.log("posts", posts);
     } catch (e) {
       // alert("게시글을 불러오지 못했습니다.");
       console.error(e);
@@ -55,13 +54,19 @@ function Board({ title = "자유 게시판" }) {
     if (!newTitle.trim()) return alert("제목을 입력하세요.");
 
     try {
-      const res = await instance.post(`${API_URL}/posts`, {
+      const res = await instance.post(`/posts`, {
         title: newTitle.trim(),
         content: newContent.trim(),
       });
-
       const image = await sendImage(res.data.insertId);
-      setPosts([{ ...res.data, image }, ...posts]);
+      console.log("image", image);
+      const newPost = {
+        id: res.data.newPost.id,
+        title: res.data.newPost.title,
+        photo: image,
+      };
+      console.log("newPost", newPost);
+      setPosts([newPost, ...posts]);
       setNewTitle("");
       setNewContent("");
     } catch (e) {
@@ -74,7 +79,7 @@ function Board({ title = "자유 게시판" }) {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
     try {
-      await instance.delete(`${API_URL}/posts/${id}`);
+      await instance.delete(`/posts/${id}`);
       setPosts(posts.filter((p) => p.id !== id));
     } catch (e) {
       console.error(e);
@@ -91,11 +96,11 @@ function Board({ title = "자유 게시판" }) {
     formData.append("tripId", tripId);
     try {
       setLoading(true);
-      const res = await instance.post(`${API_URL}/upload`, formData, {
+      const res = await instance.post(`/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
-      console.log(res.data);
+
       return res.data.fileName;
     } catch (e) {
       setLoading(false);
@@ -144,7 +149,6 @@ function Board({ title = "자유 게시판" }) {
           </li>
         )}
         {posts.map((post) => {
-          console.log("post", post);
           return (
             <li key={post.id} className="post-item">
               <div className="post-content">

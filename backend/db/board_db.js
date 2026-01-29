@@ -8,7 +8,7 @@ const pool = require("./db");
  */
 async function getAllPosts() {
   const [rows] = await pool.query(
-    "SELECT * FROM trips inner join photos on trips.id=photos.TripId ORDER BY trips.createdAt DESC",
+    "SELECT trips.id,trips.title,photos.photo FROM trips left join photos on trips.id=photos.TripId ORDER BY trips.createdAt DESC",
   );
   console.log(rows);
   return rows;
@@ -42,6 +42,7 @@ async function getPostById(id) {
  * 반환: affectedRows
  */
 async function deletePostById(id) {
+  console.log("deleteId", id);
   const [result] = await pool.query("DELETE FROM trips WHERE id = ?", [id]);
   return result.affectedRows || 0;
 }

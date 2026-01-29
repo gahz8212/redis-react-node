@@ -52,6 +52,7 @@ router.post("/", requireAuth, async (req, res) => {
 
     // 생성된 게시글 조회해서 반환 (클라이언트에 최신 정보 제공)
     const newPost = await getPostById(insertId);
+    // const newImage=await getImageById()
 
     if (!newPost) {
       return res
@@ -69,7 +70,7 @@ router.post("/", requireAuth, async (req, res) => {
 // ==================== 게시글 삭제 ====================
 router.delete("/:id", requireAuth, async (req, res) => {
   const postId = Number(req.params.id);
-
+  console.log("postId:", postId);
   // ID 유효성 검사
   if (!Number.isInteger(postId) || postId <= 0) {
     return res.status(400).json({ error: "유효하지 않은 게시글 ID입니다." });
@@ -80,7 +81,7 @@ router.delete("/:id", requireAuth, async (req, res) => {
   try {
     // 1. 게시글 존재 여부 + 작성자 확인
     const post = await getPostById(postId);
-
+    console.log("post", post);
     if (!post) {
       return res.status(404).json({ error: "게시글을 찾을 수 없습니다." });
     }
