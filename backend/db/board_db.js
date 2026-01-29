@@ -8,7 +8,7 @@ const pool = require("./db");
  */
 async function getAllPosts() {
   const [rows] = await pool.query(
-    "SELECT * FROM trips inner join photos on trips.id=photos.TripId ORDER BY trips.createdAt DESC",
+    "SELECT * FROM trips left join photos on trips.id=photos.TripId ORDER BY trips.createdAt DESC",
   );
   console.log(rows);
   return rows;
