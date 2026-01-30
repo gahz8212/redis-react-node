@@ -1,3 +1,7 @@
+import { useState } from "react";
+
+import Share from "../common/Share";
+
 const Login = ({
   user,
   handleLogin,
@@ -9,11 +13,14 @@ const Login = ({
   setPassword,
 }) => {
   return user ? (
-    <div className="user-info">
-      <strong>{user.nickname}</strong>님 환영합니다!
-      <button onClick={handleLogout} className="btn-logout">
-        로그아웃
-      </button>
+    <div>
+      <div className="user-info">
+        <strong>{user.nickname}</strong>님 환영합니다!
+        <button onClick={handleLogout} className="btn-logout">
+          로그아웃
+        </button>
+      </div>
+      <div style={{ textAlign: "center" }}>{<Share />}</div>
     </div>
   ) : (
     <form onSubmit={handleLogin} className="auth-form">

@@ -8,7 +8,7 @@ const pool = require("./db");
  */
 async function getAllPosts() {
   const [rows] = await pool.query(
-    "SELECT trips.id,trips.title,photos.photo FROM trips left join photos on trips.id=photos.TripId ORDER BY trips.createdAt DESC",
+    "SELECT trips.id,trips.title,photos.photo FROM trips left join photos on trips.id=photos.tripId ORDER BY trips.createdAt DESC",
   );
   console.log(rows);
   return rows;
@@ -20,7 +20,7 @@ async function getAllPosts() {
  */
 async function createPost(title, content, user_id) {
   const [result] = await pool.query(
-    "INSERT INTO trips (title, description, UserId) VALUES (?, ?, ?)",
+    "INSERT INTO trips (title, description, userId) VALUES (?, ?, ?)",
     [title, content, user_id],
   );
   return result.insertId;

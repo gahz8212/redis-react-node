@@ -4,6 +4,7 @@ import { useAuthStore } from "./store/authStore";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./components/Board";
+import RecieveMessage from "./components/modals/RecieveMessage";
 import { Routes, Route } from "react-router";
 import DashBoard from "./pages/DashBoard";
 import Board from "./pages/Board";
@@ -41,6 +42,12 @@ function App() {
     <div className="App">
       <DisplayOnAuth.Provider value={{ posts, setPosts }}>
         <Header />
+        <div
+          className="spacer"
+          style={{ paddingTop: "200px", position: "relative" }}
+        >
+          <RecieveMessage />
+        </div>
         <main>
           <Routes>
             <Route path="/" element={<Home />} />

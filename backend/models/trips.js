@@ -19,14 +19,14 @@ module.exports = class Trips extends Sequelize.Model {
           type: Sequelize.INTEGER,
           defaultValue: 0,
         },
-        createdAt: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.NOW,
-        },
-        updatedAt: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.NOW,
-        },
+        // createdAt: {
+        //   type: Sequelize.DATE,
+        //   defaultValue: Sequelize.NOW,
+        // },
+        // updatedAt: {
+        //   type: Sequelize.DATE,
+        //   defaultValue: Sequelize.NOW,
+        // },
       },
       {
         sequelize,
@@ -43,7 +43,7 @@ module.exports = class Trips extends Sequelize.Model {
   static associate(db) {
     db.Trip.hasMany(db.Photo);
 
-    db.Trip.belongsTo(db.User);
+    db.Trip.belongsToMany(db.User,{through:'usertrip'});
   }
 };
 

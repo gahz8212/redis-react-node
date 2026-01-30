@@ -1,6 +1,11 @@
 // server/routes/users.js
 const express = require("express");
-const { findUserByEmail, createUser } = require("../db/user_db");
+const {
+  findUserByEmail,
+  createUser,
+  setStatus,
+  getStatus,
+} = require("../db/user_db");
 const bcrypt = require("bcrypt");
 const router = express.Router();
 const passport = require("passport");
@@ -110,6 +115,26 @@ router.post("/logout", (req, res) => {
     res.clearCookie("connect.sid"); // 기본 세션 쿠키 이름
     return res.json({ success: true, message: "로그아웃 되었습니다." });
   });
+});
+router.post("/publicToggle", async (req, res) => {
+  const { open } = req.body;
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  try {
+    await setStatus(open, req.user.id);
+    res.status(200).json({ status: "ok" });
+  } catch (e) {
+    console.error(e);
+  }
+});
+router.get("/publicToggle", async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  const toggle = await getStatus(req.user.id);
+  console.log("toggle", toggle);
+  res.status(200).json(toggle);
 });
 
 module.exports = router;
