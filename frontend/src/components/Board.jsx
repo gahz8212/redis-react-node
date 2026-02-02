@@ -3,6 +3,9 @@ import { useEffect, useState, useContext } from "react";
 // import Loading from "./Loading";
 import { useAuthStore } from "../store/authStore";
 import { DisplayOnAuth } from "../contexts/display_on_Auth";
+import { ShowMessage } from "../contexts/show_message";
+import { PublicUsers } from "../contexts/show_message";
+import { TripList } from "../contexts/tripList";
 import instance from "../api/instance";
 /**
  * API 기본 경로
@@ -25,21 +28,24 @@ function Board({ title = "자유 게시판" }) {
 
   const [selectedFile, setSelectedFile] = useState(null);
   // const [result, setResult] = useState(null);
-
+  const { user } = useAuthStore();
   const [loading, setLoading] = useState(false);
   const { posts, setPosts } = useContext(DisplayOnAuth);
-
+  const { show, setShow } = useContext(ShowMessage);
+  const { setMember } = useContext(PublicUsers);
+  const { updateList, updateTripList } = useContext(TripList);
   useEffect(() => {
     fetchPosts();
     fetchPostsFunc = fetchPosts;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [updateList]);
 
   const fetchPosts = async () => {
     try {
       setLoading(true);
       const res = await instance.get(`/posts`);
+      console.log("res.data", res.data);
       setPosts(res.data);
     } catch (e) {
       // alert("게시글을 불러오지 못했습니다.");
@@ -58,12 +64,14 @@ function Board({ title = "자유 게시판" }) {
         title: newTitle.trim(),
         content: newContent.trim(),
       });
+      console.log("insertId", res.data.insertId);
       const image = await sendImage(res.data.insertId);
       console.log("image", image);
       const newPost = {
         id: res.data.newPost.id,
         title: res.data.newPost.title,
         photo: image,
+        tripId: res.data.insertId,
       };
       console.log("newPost", newPost);
       setPosts([newPost, ...posts]);
@@ -75,6 +83,32 @@ function Board({ title = "자유 게시판" }) {
     }
   };
 
+  const handleInvite = async (location, tripId) => {
+    // if (!window.confirm("정말 삭제하시겠습니까?")) return;
+    if (!show.visible) setShow({ visible: true, location, tripId });
+    try {
+      const users = await instance.get(`/users/public`);
+      console.log("publicUsers", users.data.publicUsers);
+      const invitableUser = users.data.publicUsers;
+      invitableUser && setMember(invitableUser);
+    } catch (e) {
+      console.error(e);
+      // alert("삭제 실패");
+    }
+  };
+  const handleWithdrow = async (location, tripId) => {
+    // if (!window.confirm("정말 삭제하시겠습니까?")) return;
+    // if (!show.visible) setShow({ visible: true, location, tripId });
+    try {
+      const result = await instance.get(`/companion/ungroup/${tripId}`);
+      if (result.data.message === "ok") {
+        updateTripList(!updateList);
+      }
+    } catch (e) {
+      console.error(e);
+      // alert("삭제 실패");
+    }
+  };
   const handleDelete = async (id) => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
@@ -161,12 +195,29 @@ function Board({ title = "자유 게시판" }) {
               {post.photo && (
                 <img src={`${IMG_URL}${post.photo}`} width="100px" />
               )}
-              <button
-                onClick={() => handleDelete(post.id)}
-                className="btn-delete"
-              >
-                삭제
-              </button>
+              {post.owner === user.id ? (
+                <>
+                  <button
+                    onClick={() => handleInvite(post.title, post.id)}
+                    className="btn-invite"
+                  >
+                    초대
+                  </button>
+                  <button
+                    onClick={() => handleDelete(post.id)}
+                    className="btn-delete"
+                  >
+                    삭제
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => handleWithdrow(post.title, post.id)}
+                  className="btn-invite"
+                >
+                  탈퇴
+                </button>
+              )}
             </li>
           );
         })}

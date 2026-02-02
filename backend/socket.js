@@ -16,9 +16,11 @@ function removeUserSocket(email, socketId) {
 function registerSocketHandlers(io) {
   io.on("connection", (socket) => {
     const user = socket.request.user;
-    if (!user || !user.email) return;
+    console.log("user", user);
+    if (!user || !user.email || !user.nickname) return;
 
     const email = user.email;
+    const nick = user.nickname;
 
     // 1. 연결 시 Map에 등록 (중복 방지를 위해 Set 사용)
     addUserSocket(email, socket.id);
@@ -29,24 +31,25 @@ function registerSocketHandlers(io) {
       `✅ [연결] ${email} | 현재 소켓 수: ${userSockets.get(email).size}`,
     );
 
-    socket.on("send_to_user", ({ toUserEmail, tripId, tripTitle, text }) => {
-      if (!toUserEmail) return console.log("대상 이메일이 없습니다.");
-      const targets = userSockets.get(toUserEmail);
+    socket.on("send_to_user", ({ reciever, location, tripId }) => {
+      console.log("socket");
+      if (!reciever) return console.log("대상 유저가 없습니다.");
+      const targets = userSockets.get(reciever);
 
-      console.log(`서버에서 ${toUserEmail}로 발송 시도. 찾은 소켓:`, targets);
+      console.log(`서버에서 ${reciever}로 발송 시도. 찾은 소켓:`, targets);
 
       if (targets && targets.size > 0) {
         targets.forEach((sid) => {
           io.to(sid).emit("incoming_message", {
-            fromUserEmail: email,
-            tripId: tripId,
-            tripTitle: tripTitle,
-            text,
+            to: reciever,
+            from: nick,
+            tripId,
+            location,
             at: Date.now(),
           });
         });
       } else {
-        console.log(`❌ ${toUserEmail}는 현재 찾을 수 없음 (undefined 상태)`);
+        console.log(`❌ ${reciever}는 현재 찾을 수 없음 (undefined 상태)`);
       }
     });
 

@@ -367,16 +367,17 @@ button:active,
   font-size: 12px;
 }
 
-.btn-delete {
+.btn-delete,
+.btn-invite {
   height: 36px;
   padding: 0 12px;
-
   background: var(--danger-weak);
   border-color: var(--danger-border);
   color: var(--danger-text);
 }
 
-.btn-delete:hover {
+.btn-delete:hover,
+.btn-invite:hover {
   background: rgba(239, 68, 68, 0.14);
   border-color: rgba(239, 68, 68, 0.4);
 }

@@ -42,8 +42,17 @@ async function setStatus(value, userId) {
   await pool.query("UPDATE users SET status=? WHERE id=?", [!!value, userId]);
 }
 async function getStatus(userId) {
-  const [status] = await pool.query("SELECT status FROM USERS WHERE id=?", [userId]);
-  return status[0]
+  const [status] = await pool.query("SELECT status FROM USERS WHERE id=?", [
+    userId,
+  ]);
+  return status[0];
+}
+async function getPublicUsers(userId) {
+  const [users] = await pool.query(
+    "select id,email,nickname from users where status=0 and id!=?",
+    [userId],
+  );
+  return users;
 }
 module.exports = {
   findUserByCredentials,
@@ -52,4 +61,5 @@ module.exports = {
   createUser,
   setStatus,
   getStatus,
+  getPublicUsers,
 };

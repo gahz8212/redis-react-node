@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
   # 1. Reverse Proxy (Nginx)
@@ -51,7 +51,7 @@ services:
     networks:
       - app-network
 
-  # 4. Database (MySQL) - 외부 3307 사용
+  # 4. Database (MySQL) - 외부 3309 사용
   db:
     image: mysql:8.0
     container_name: mysql_db

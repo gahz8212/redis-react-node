@@ -5,6 +5,7 @@ const {
   createUser,
   setStatus,
   getStatus,
+  getPublicUsers,
 } = require("../db/user_db");
 const bcrypt = require("bcrypt");
 const router = express.Router();
@@ -135,6 +136,15 @@ router.get("/publicToggle", async (req, res) => {
   const toggle = await getStatus(req.user.id);
   console.log("toggle", toggle);
   res.status(200).json(toggle);
+});
+router.get("/public", async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  console.log("getPublic");
+  const publicUsers = await getPublicUsers(req.user.id);
+  console.log("publicUsers", publicUsers);
+  res.status(200).json({ publicUsers });
 });
 
 module.exports = router;

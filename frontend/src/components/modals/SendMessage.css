@@ -1,9 +1,9 @@
-.recieve_message_wrapper {
-  background: pink;
+.send_message_wrapper {
+  background: mediumspringgreen;
   width: 200px;
-  min-height: 150px;
+  min-height: 120px;
   position: absolute;
-  right: 0;
+  left: 0;
   padding: 0.5rem;
 
   /* 1. 기준점을 헤더의 맨 아래로 잡습니다. */
@@ -20,14 +20,20 @@
   /* 4. 헤더 배경(z-index: 3 가정)보다 뒤로 가게 설정 */
   z-index: 1;
   /* opacity: 0; 숨겨져 있을 때 투명하게 처리하면 더 자연스럽습니다 */
-  margin-right: 2rem;
+  margin-left: 2rem;
   &.active {
     /* 5. 활성화 시: 제자리(Header 바로 아래)로 스르륵 내려옴 */
     transform: translateY(0%);
     /* opacity: 1; */
   }
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-  button {
-    margin: 0.5rem 0.3rem;
+  .buttons {
+    margin-left: auto;
+    button + button {
+      margin-left: 0.5rem;
+    }
   }
 }

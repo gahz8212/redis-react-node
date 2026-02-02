@@ -8,7 +8,11 @@ const cors = require("cors");
 const boardRouter = require("./routes/board_router");
 const userRouter = require("./routes/user_router");
 const uploadRouter = require("./routes/upload_router");
+const companionRouter = require("./routes/companion_router");
 const passportConfig = require("./passport");
+const http = require("http");
+const { Server } = require("socket.io");
+const registerSocketHandlers = require("./socket");
 const { RedisStore } = require("connect-redis");
 const { createClient } = require("redis");
 
@@ -40,12 +44,17 @@ redisClient.connect().catch(console.error);
 // app.js 또는 server.js
 
 const app = express();
-
+const server = http.createServer(app);
 const allowedOrigins = [
   "http://localhost:5173", // 리액트(Vite) 로컬 개발 서버
-  "http://localhost", // nginx가 서버역할을 하므로 docker환경에서는 Vite 주소가 의미 없다
+  "http://localhost", //docker환경에서는 nginx가 서버역할을 하므로  Vite 주소가 의미 없다 :80이 숨겨진 상태
 ];
-
+const io = new Server(server, {
+  cors: {
+    origin: allowedOrigins,
+    credentials: true,
+  },
+});
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -96,6 +105,16 @@ app.use("/api/posts", boardRouter);
 // 사용자 라우터 연결
 app.use("/api/users", userRouter);
 app.use("/api/upload", uploadRouter);
+app.use("/api/companion", companionRouter);
+
+const wrap = (middleware) => (socket, next) =>
+  middleware(socket.request, {}, next);
+
+io.use(wrap(sessionMiddleware));
+io.use(wrap(passport.initialize()));
+io.use(wrap(passport.session()));
+
+registerSocketHandlers(io);
 
 // 기본 라우트
 app.get("/api", (req, res) => {
@@ -108,6 +127,6 @@ app.get("/", (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`서버 실행 중: http://localhost:${PORT}`);
 });
