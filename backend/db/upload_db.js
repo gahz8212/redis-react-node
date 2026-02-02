@@ -7,7 +7,7 @@ const pool = require("./db");
  */
 async function uploadProcess(userId, tripId, photo) {
   const [rows] = await pool.query(
-    "insert into photos (photo,UserId,TripId) values (?,?,?)",
+    "insert into photos (photo,userId,tripId) values (?,?,?)",
     [photo, userId, tripId],
   );
   if (!rows || rows.length === 0) return null;

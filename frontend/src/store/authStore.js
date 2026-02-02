@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import instance from "../api/instance";
+import socket from "../socket";
 // import axios from "axios";
 
 // const API_URL = import.meta.env.VITE_API_URL || "/api";
@@ -31,6 +32,7 @@ export const useAuthStore = create(
           // 401 에러 등이 나면 세션이 만료된 것이므로 유저 정보 초기화
           console.error(e);
           set({ user: null, isChecking: false });
+          socket.disconnect();
         }
       },
 
@@ -42,7 +44,9 @@ export const useAuthStore = create(
             password,
           });
           // 로그인 응답에 user 객체가 있다고 가정
+
           set({ user: res.data.user, loading: false });
+          socket.connect();
           return { success: true };
         } catch (e) {
           const msg = e?.response?.data?.error || "로그인에 실패했습니다.";
@@ -76,6 +80,7 @@ export const useAuthStore = create(
         } finally {
           // 성공 실패 여부와 상관없이 클라이언트 상태는 로그아웃 처리
           set({ user: null, error: null });
+          socket.disconnect();
           localStorage.removeItem("auth-storage");
         }
       },

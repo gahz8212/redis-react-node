@@ -9,7 +9,7 @@ const pool = require("./db");
 async function findUserByCredentials(email, password) {
   const [rows] = await pool.query(
     "SELECT id, nickname, createdAt FROM users WHERE email = ? AND password = ?",
-    [email, password]
+    [email, password],
   );
   if (!rows || rows.length === 0) return null;
   return rows[0];
@@ -17,7 +17,7 @@ async function findUserByCredentials(email, password) {
 async function findUserById(id) {
   const [rows] = await pool.query(
     "SELECT id, nickname, createdAt FROM users WHERE id = ? ",
-    [id]
+    [id],
   );
   if (!rows || rows.length === 0) return null;
   return rows[0];
@@ -25,7 +25,7 @@ async function findUserById(id) {
 async function findUserByEmail(email) {
   const [rows] = await pool.query(
     "SELECT id, nickname,password FROM users WHERE email = ? ",
-    [email]
+    [email],
   );
   if (!rows || rows.length === 0) return null;
   return rows[0];
@@ -37,9 +37,29 @@ async function createUser(nickname, email, password) {
     password,
   ]);
 }
+async function setStatus(value, userId) {
+  console.log("value,userId", value, userId);
+  await pool.query("UPDATE users SET status=? WHERE id=?", [!!value, userId]);
+}
+async function getStatus(userId) {
+  const [status] = await pool.query("SELECT status FROM USERS WHERE id=?", [
+    userId,
+  ]);
+  return status[0];
+}
+async function getPublicUsers(userId) {
+  const [users] = await pool.query(
+    "select id,email,nickname from users where status=0 and id!=?",
+    [userId],
+  );
+  return users;
+}
 module.exports = {
   findUserByCredentials,
   findUserById,
   findUserByEmail,
   createUser,
+  setStatus,
+  getStatus,
+  getPublicUsers,
 };

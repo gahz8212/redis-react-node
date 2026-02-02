@@ -16,14 +16,19 @@ module.exports = class Users extends Sequelize.Model {
           type: Sequelize.STRING(200),
           allowNull: false,
         },
-        createdAt: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.NOW,
+        status: {
+          type: Sequelize.TINYINT,
+          allowNull: false,
+          defaultValue: 0,
         },
-        updatedAt: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.NOW,
-        },
+        // createdAt: {
+        //   type: Sequelize.DATE,
+        //   defaultValue: Sequelize.NOW,
+        // },
+        // updatedAt: {
+        //   type: Sequelize.DATE,
+        //   defaultValue: Sequelize.NOW,
+        // },
       },
       {
         sequelize,
@@ -38,8 +43,7 @@ module.exports = class Users extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.User.hasMany(db.Trip);
-
+    db.User.belongsToMany(db.Trip, { through: "usertrip" });
     db.User.hasMany(db.Photo);
   }
 };

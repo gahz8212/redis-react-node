@@ -5,10 +5,12 @@ const sharp = require("sharp");
 const path = require("path");
 const fs = require("fs");
 const albumService = require("../db/upload_db.js");
+const fs = require("fs");
+const path = require("path");
+const sharp = require("sharp");
 router.post("/", upload.single("image"), async (req, res) => {
   const { tripId } = req.body;
   console.log("파일 수신 완료:", req.file.filename);
-
   try {
     // 1. 로그인 여부 확인 (Passport가 제공하는 함수)
     if (!req.isAuthenticated())
@@ -38,10 +40,11 @@ router.post("/", upload.single("image"), async (req, res) => {
       tripId,
       req.file.filename,
     );
+
     res.json({ message: "서버 저장 성공!", fileName: req.file.filename });
   } catch (e) {
     console.error(e);
-    res.status(400).json({ message: "서버 저장 실패!" });
+    res.status(401).json({ message: e });
   }
 });
 module.exports = router;

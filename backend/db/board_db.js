@@ -6,9 +6,14 @@ const pool = require("./db");
  * 모든 게시글 조회 (최신순)
  * 반환: posts[]
  */
-async function getAllPosts() {
+async function getAllPosts(userId) {
   const [rows] = await pool.query(
-    "SELECT * FROM trips left join photos on trips.id=photos.TripId ORDER BY trips.createdAt DESC",
+    `SELECT trips.id,trips.title,photos.photo,usertrip.owner FROM 
+     trips INNER JOIN usertrip ON trips.id=usertrip.tripId 
+     LEFT JOIN photos ON trips.id=photos.tripId 
+     WHERE usertrip.userId=?
+     ORDER BY trips.createdAt DESC`,
+    [userId],
   );
   console.log(rows);
   return rows;
@@ -18,12 +23,18 @@ async function getAllPosts() {
  * 게시글 생성
  * 반환: insertId
  */
-async function createPost(title, content, user_id) {
+async function createPost(title, content, userId) {
   const [result] = await pool.query(
-    "INSERT INTO trips (title, description, UserId) VALUES (?, ?, ?)",
-    [title, content, user_id],
+    "INSERT INTO trips (title, description) VALUES (?, ?)",
+    [title, content],
   );
-  return result.insertId;
+  const insertId = result.insertId;
+
+  await pool.query(
+    "INSERT INTO usertrip (owner,userId,tripId) VALUES (?,?,?)",
+    [userId, userId, insertId],
+  );
+  return insertId;
 }
 
 /**
@@ -42,6 +53,7 @@ async function getPostById(id) {
  * 반환: affectedRows
  */
 async function deletePostById(id) {
+  console.log("deleteId", id);
   const [result] = await pool.query("DELETE FROM trips WHERE id = ?", [id]);
   return result.affectedRows || 0;
 }
