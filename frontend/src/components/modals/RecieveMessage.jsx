@@ -1,23 +1,23 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useContext } from "react";
 import style from "./RecieveMessage.module.scss";
 import "./RecieveMessage.css";
 import instance from "../../api/instance";
 import { useMessageStore } from "../../store/messageStore";
 import { TripList } from "../../contexts/tripList";
+import { Reply } from "../../contexts/show_message";
 
 const RecieveMessage = () => {
-  const [active, setActive] = useState(true);
+  const { reply, setReply } = useContext(Reply);
+  const { updateTripList } = useContext(TripList);
   const { nextMessage, clearMessage, messages, latestMessage } =
     useMessageStore();
-
-  const { updateTripList } = useContext(TripList);
 
   useEffect(() => {
     console.log("messages", messages);
     if (latestMessage) {
-      setActive(true);
+      setReply(true);
     } else {
-      setActive(false);
+      setReply(false);
     }
   }, [messages]);
 
@@ -38,18 +38,19 @@ const RecieveMessage = () => {
       console.error(e);
     }
   };
-  const abort = async () => {
+  const abort = () => {
+    setReply(false);
     nextMessage();
   };
   return (
     <div>
-      <div className={`recieve_message_wrapper ${active ? "active" : ""}`}>
+      <div className={`recieve_message_wrapper ${reply ? "active" : ""}`}>
         <div className={style.header}>
           <b>메세지</b>
         </div>
         <div className={style.body}>
-          {messages.map((message) => (
-            <div className={style.contents}>
+          {messages.map((message, index) => (
+            <div key={index} className={style.contents}>
               <div>
                 <b>{message.from}</b>님이
               </div>

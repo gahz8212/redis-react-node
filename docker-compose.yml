@@ -19,8 +19,6 @@ services:
     container_name: vite_frontend
     expose:
       - "5173"
-    environment:
-      - CHOKIDAR_USEPOLLING=true
     networks:
       - app-network
 
@@ -35,20 +33,29 @@ services:
       # [내 컴퓨터의 실제 폴더 경로] : [컨테이너 내부 경로]
       - ./backend/uploads:/app/uploads
     environment:
+  
+      ######################
+      # - DB_HOST=db       #
+      # - DB_PORT=3306     #       # Prisma는 아래와 같은 형식의 URL을 주로 사용합니다.
+      # - DB_USER=root     #   ==> - DATABASE_URL=mysql://root:1234@db:3306/trip-db
+      # - DB_PASSWORD=1234 #
+      # - DB_NAME=trip-db  #
+      ###################### 
+   
       - NODE_ENV=development
-      - DB_HOST=db
-      - DB_PORT=3306
-      - DB_USER=root
-      - DB_PASSWORD=1234
-      - DB_NAME=trip-db
+      # Prisma는 아래와 같은 형식의 URL을 주로 사용합니다.#
+      - DATABASE_URL=mysql://root:1234@db:3306/trip-db #
+      ##################################################
       - REDIS_HOST=redis
       - REDIS_URL=redis://redis:6379
       - REDIS_PORT=6379
-      - COOKIE_SECRET=camino
+      - COOKIE_SECRET=buen-camino
       - PORT=5000
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy  # DB가 건강한(healthy) 상태일 때까지 대기
+      redis:
+        condition: service_started
     networks:
       - app-network
 
@@ -64,10 +71,19 @@ services:
       - "3309:3306"
     volumes:
       - db_data:/var/lib/mysql
+    # --- Healthcheck 설정 추가 ---
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p1234"]
+      interval: 10s      # 10초마다 체크
+      timeout: 5s       # 5초 이상 걸리면 실패로 간주
+      retries: 5        # 5번 연속 실패하면 'unhealthy' 상태로 판단
+      start_period: 30s # 초기 구동 시 데이터베이스 초기화 시간을 고려하여 30초간 유예
+    # ---------------------------
     networks:
       - app-network
 
   # 5. Cache & Session Store (Redis) - 누락되었던 부분
+
   redis:
     image: redis:alpine
     container_name: redis_session

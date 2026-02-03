@@ -10,7 +10,7 @@ export const useMessageStore = create((set) => ({
       if (!exists) {
         console.log("msg", msg.location);
         return {
-          messages: [...state.messages,msg],
+          messages: [...state.messages, msg],
           latestMessage: msg,
         };
       }
@@ -21,6 +21,7 @@ export const useMessageStore = create((set) => ({
   nextMessage: () =>
     set((state) => {
       if (state.messages.length === 0) {
+        alert(state.messages.length);
         return { latestMessage: null };
       }
       const newMessages = state.messages.slice(0, -1);

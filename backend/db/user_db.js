@@ -31,7 +31,7 @@ async function findUserByEmail(email) {
   return rows[0];
 }
 async function createUser(nickname, email, password) {
-  await pool.query("INSERT INTO USERS (nickname,email,password)VALUES(?,?,?)", [
+  await pool.query("INSERT INTO users (nickname,email,password)VALUES(?,?,?)", [
     nickname,
     email,
     password,
@@ -42,7 +42,7 @@ async function setStatus(value, userId) {
   await pool.query("UPDATE users SET status=? WHERE id=?", [!!value, userId]);
 }
 async function getStatus(userId) {
-  const [status] = await pool.query("SELECT status FROM USERS WHERE id=?", [
+  const [status] = await pool.query("SELECT status FROM users WHERE id=?", [
     userId,
   ]);
   return status[0];

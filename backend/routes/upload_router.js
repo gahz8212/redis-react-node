@@ -5,9 +5,7 @@ const sharp = require("sharp");
 const path = require("path");
 const fs = require("fs");
 const albumService = require("../db/upload_db.js");
-const fs = require("fs");
-const path = require("path");
-const sharp = require("sharp");
+
 router.post("/", upload.single("image"), async (req, res) => {
   const { tripId } = req.body;
   console.log("파일 수신 완료:", req.file.filename);

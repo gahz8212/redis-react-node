@@ -186,7 +186,11 @@ function Board({ title = "자유 게시판" }) {
           return (
             <li key={post.id} className="post-item">
               <div className="post-content">
-                <strong>{post.title}</strong>
+                <strong>
+                  {post.id}
+                  {post.title}
+                  {post.owner}
+                </strong>
                 {post.content && <p>{post.content}</p>}
                 <small>
                   {new Date(post.createdAt).toLocaleString("ko-KR")}

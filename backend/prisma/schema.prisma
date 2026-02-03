@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -47,7 +48,7 @@ model Trip {
 model UserTrip {
   userId Int
   tripId Int
-  owner  Int
+  owner  Int?
 
   user User @relation(fields: [userId], references: [id])
   trip Trip @relation(fields: [tripId], references: [id])
@@ -56,6 +57,7 @@ model UserTrip {
   updatedAt DateTime? @updatedAt
 
   @@id([userId, tripId])
+  @@map("usertrip")
 }
 
 model Photo {
